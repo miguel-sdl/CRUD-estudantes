@@ -10,12 +10,12 @@ import java.sql.SQLException;
 
 public class NotasRepository {
 
-    public static Notas findByStudentId(int studentId) throws SQLException {
+    public static Notas findByStudentId(int studentId) {
         try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement ps = createPreparedStatementFindByStudentId(conn, studentId);) {
             ResultSet rs = ps.executeQuery();
 
-            rs.next();
+            if (!rs.next()) return null;
             Notas notas = Notas.builder()
                     .idEstudante(rs.getInt("id_estudante"))
                     .portugues(rs.getDouble("portugues"))
@@ -29,6 +29,8 @@ public class NotasRepository {
                     .build();
 
             return notas;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -39,5 +41,37 @@ public class NotasRepository {
         preparedStatement.setInt(1, id);
 
         return preparedStatement;
+    }
+
+
+    public static int save(Notas notas) {
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement ps = createPreparedStatementSave(conn, notas)) {
+            return ps.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    private static PreparedStatement createPreparedStatementSave(Connection conn, Notas notas) throws SQLException {
+        String sql = "INSERT INTO `cadastro_estudante`.`notas`\n" +
+                "(`id_estudante`, `portugues`, `matematica`, `historia`, `geografia`, `fisica`, `quimica`, `biologia`, `ingles`)\n" +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
+
+        PreparedStatement preparedStatement = conn.prepareStatement(sql);
+        preparedStatement.setInt(1, notas.getIdEstudante());
+        preparedStatement.setDouble(2, notas.getPortugues());
+        preparedStatement.setDouble(3, notas.getMatematica());
+        preparedStatement.setDouble(4, notas.getHistoria());
+        preparedStatement.setDouble(5, notas.getGeografia());
+        preparedStatement.setDouble(6, notas.getFisica());
+        preparedStatement.setDouble(7, notas.getQuimica());
+        preparedStatement.setDouble(8, notas.getBiologia());
+        preparedStatement.setDouble(9, notas.getIngles());
+
+        return preparedStatement;
+
     }
 }
