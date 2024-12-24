@@ -44,9 +44,32 @@ class NotasRepositoryTest {
     }
 
     @Test
+    @DisplayName("findByStudentId deve retornar null quando nao encontrar nota")
+    void findByStudentId_NaoEncontraNota() {
+        Notas notasDB = NotasRepository.findByStudentId(1000);
+        Assertions.assertNull(notasDB);
+    }
+
+    @Test
     @DisplayName("save() deve retornar 1 quando uma nota e salva no db")
     void save() {
         int rowsAffected = NotasRepository.save(notas);
         Assertions.assertEquals(1, rowsAffected);
     }
+
+    @Test
+    @DisplayName("update() deve retornar 1 quando 1 nota e salva no db")
+    void update() {
+        int rowsAffected = NotasRepository.update(notas);
+        Assertions.assertEquals(1, rowsAffected);
+    }
+
+    @Test
+    @DisplayName("update() deve retornar 0 quando nao encontrar nota para atualizar")
+    void update_NaoEncontraNota() {
+        notas.setIdEstudante(1000);
+        int rowsAffected = NotasRepository.update(notas);
+        Assertions.assertEquals(0, rowsAffected);
+    }
+
 }

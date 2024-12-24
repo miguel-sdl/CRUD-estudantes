@@ -74,4 +74,32 @@ public class NotasRepository {
         return preparedStatement;
 
     }
+
+    public static int update(Notas notas) {
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement ps = createPreparedStatementUpdate(conn, notas)) {
+            return ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static PreparedStatement createPreparedStatementUpdate(Connection conn, Notas notas) throws SQLException {
+        String sql = "UPDATE `cadastro_estudante`.`notas`\n" +
+                "SET `portugues` = ?, `matematica` = ?, `historia` = ?,`geografia` = ?, `fisica` = ?, `quimica` = ?, `biologia` = ?, `ingles` = ?\n" +
+                "WHERE `id` = ?\n";
+
+        PreparedStatement preparedStatement = conn.prepareStatement(sql);
+        preparedStatement.setDouble(1, notas.getPortugues());
+        preparedStatement.setDouble(2, notas.getMatematica());
+        preparedStatement.setDouble(3, notas.getHistoria());
+        preparedStatement.setDouble(4, notas.getGeografia());
+        preparedStatement.setDouble(5, notas.getFisica());
+        preparedStatement.setDouble(6, notas.getQuimica());
+        preparedStatement.setDouble(7, notas.getBiologia());
+        preparedStatement.setDouble(8, notas.getIngles());
+        preparedStatement.setInt(9, notas.getIdEstudante());
+
+        return preparedStatement;
+    }
 }
