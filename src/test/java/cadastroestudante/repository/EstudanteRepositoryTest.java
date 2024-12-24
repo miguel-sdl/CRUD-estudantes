@@ -75,9 +75,32 @@ class EstudanteRepositoryTest {
     }
 
     @Test
+    @DisplayName("findByName deve retornar uma lista vazia quando encontrar nenhum estudante")
+    void findByName_NomeNaoEncontrado() {
+        List<Estudante> estudantes = EstudanteRepository.findByName("nsanifobf");
+        Assertions.assertTrue(estudantes.isEmpty());
+    }
+
+    @Test
     @DisplayName("save() deve retornar 1 quando um estudante e salvo no db")
     void save() {
         int rowAffected = EstudanteRepository.save(estudante);
         Assertions.assertEquals(1, rowAffected);
+    }
+
+    @Test
+    @DisplayName("update() deve retornar 1 quando um estudante e atualizado no db")
+    void update() {
+        carlos.setIdade(15);
+        int rowsAffected = EstudanteRepository.update(carlos);
+        Assertions.assertEquals(1, rowsAffected);
+    }
+
+    @Test
+    @DisplayName("update() deve retornar 0 quando nao encontrar estudante para atualizar")
+    void update_estudanteNaoEncontrado() {
+        estudante.setId(1000);
+        int rowsAffected = EstudanteRepository.update(estudante);
+        Assertions.assertEquals(0, rowsAffected);
     }
 }
