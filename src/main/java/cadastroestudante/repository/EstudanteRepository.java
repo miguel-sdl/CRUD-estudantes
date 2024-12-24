@@ -11,11 +11,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EstudanteRepository {
-    public static List<Estudante> findByName(String name) throws SQLException {
+    public static List<Estudante> findByName(String name) {
         List<Estudante> estudantes = new ArrayList<>();
 
         try (Connection conn = ConnectionFactory.getConnection();
-        PreparedStatement ps = createPreparedStatementFindByName(conn, name)){
+             PreparedStatement ps = createPreparedStatementFindByName(conn, name)) {
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
@@ -31,6 +31,8 @@ public class EstudanteRepository {
             }
 
             return estudantes;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -39,6 +41,30 @@ public class EstudanteRepository {
 
         PreparedStatement preparedStatement = conn.prepareStatement(sql);
         preparedStatement.setString(1, String.format("%%%s%%", name));
+
+        return preparedStatement;
+    }
+
+    public static int save(Estudante estudante) {
+
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement ps = createPreparedStatementSave(conn, estudante)) {
+            return ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    private static PreparedStatement createPreparedStatementSave(Connection conn, Estudante estudante) throws SQLException {
+        String sql = "INSERT INTO `cadastro_estudante`.`estudante`" +
+                "(`nome`, `idade`, `serie`)" +
+                "VALUES (?, ?, ?);";
+
+        PreparedStatement preparedStatement = conn.prepareStatement(sql);
+        preparedStatement.setString(1, estudante.getNome());
+        preparedStatement.setInt(2, estudante.getIdade());
+        preparedStatement.setInt(3, estudante.getSerie());
 
         return preparedStatement;
     }
