@@ -45,7 +45,7 @@ public class EstudanteService {
             return;
         }
 
-        printStudents(estudantes);
+        printStudent(estudantes);
 
     }
 
@@ -61,12 +61,16 @@ public class EstudanteService {
 
     }
 
-    private static void printStudents(List<Estudante> estudantes) {
+    private static void printStudent(List<Estudante> estudantes) {
         for (Estudante estudante : estudantes) {
-            System.out.printf("[%d] Nome: %s, idade %d, serie: %d%n", estudante.getId(), estudante.getNome(), estudante.getIdade(), estudante.getSerie());
-            if (Objects.nonNull(estudante.getNotas())) {
-                System.out.println(estudante.getNotas());
-            }
+            printStudent(estudante);
+        }
+    }
+
+    private static void printStudent(Estudante estudante) {
+        System.out.printf("[%d] Nome: %s, idade %d, serie: %d%n", estudante.getId(), estudante.getNome(), estudante.getIdade(), estudante.getSerie());
+        if (Objects.nonNull(estudante.getNotas())) {
+            System.out.println(estudante.getNotas());
         }
     }
 
@@ -74,4 +78,20 @@ public class EstudanteService {
     public static List<Estudante> findByName(String name) {
         return EstudanteRepository.findByName(name);
     }
+
+    public static List<Estudante> findAll() {
+        return EstudanteRepository.findByName("");
+    }
+
+    public static Estudante findById(int id) {
+        idValidate(id);
+        return EstudanteRepository.findById(id);
+    }
+
+    private static void idValidate(int id) {
+        if (id <= 0) {
+            throw new IllegalArgumentException("ID invalido");
+        }
+    }
+
 }

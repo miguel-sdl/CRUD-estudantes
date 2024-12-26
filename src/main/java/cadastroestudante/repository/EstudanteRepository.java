@@ -45,6 +45,37 @@ public class EstudanteRepository {
         return preparedStatement;
     }
 
+    public static Estudante findById(int id) {
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement ps = createPreparedStatementFindById(conn, id)) {
+
+            ResultSet rs = ps.executeQuery();
+            Estudante estudante = null;
+            while (rs.next()) {
+                estudante = Estudante.builder()
+                        .id(rs.getInt("idestudante"))
+                        .nome(rs.getString("nome"))
+                        .idade(rs.getInt("idade"))
+                        .serie(rs.getInt("serie"))
+                        .notas(NotasRepository.findByStudentId(rs.getInt("idestudante")))
+                        .build();
+            }
+
+            return estudante;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static PreparedStatement createPreparedStatementFindById(Connection conn, int id) throws SQLException {
+        String sql = "SELECT * FROM `cadastro_estudante`.`estudante` WHERE idestudante = ?;";
+
+        PreparedStatement preparedStatement = conn.prepareStatement(sql);
+        preparedStatement.setInt(1, id);
+
+        return preparedStatement;
+    }
+
     public static int save(Estudante estudante) {
 
         try (Connection conn = ConnectionFactory.getConnection();
@@ -71,7 +102,7 @@ public class EstudanteRepository {
 
     public static int update(Estudante estudante) {
         try (Connection conn = ConnectionFactory.getConnection();
-        PreparedStatement ps = createPreparedStatementUpdate(conn, estudante)) {
+             PreparedStatement ps = createPreparedStatementUpdate(conn, estudante)) {
             return ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -96,7 +127,7 @@ public class EstudanteRepository {
 
     public static int delete(int id) {
         try (Connection conn = ConnectionFactory.getConnection();
-        PreparedStatement ps = createPreparedStatementDelete(conn, id);) {
+             PreparedStatement ps = createPreparedStatementDelete(conn, id)) {
             return ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -109,6 +140,6 @@ public class EstudanteRepository {
         PreparedStatement preparedStatement = conn.prepareStatement(sql);
         preparedStatement.setInt(1, id);
 
-        return  preparedStatement;
+        return preparedStatement;
     }
 }

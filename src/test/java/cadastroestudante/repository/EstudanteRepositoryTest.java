@@ -82,6 +82,13 @@ class EstudanteRepositoryTest {
     }
 
     @Test
+    @DisplayName("findById(3) deve encontar o estudante com id 3")
+    void findById() {
+        Estudante estudante = EstudanteRepository.findById(3);
+        Assertions.assertEquals(carlos, estudante);
+    }
+
+    @Test
     @DisplayName("save() deve retornar 1 quando um estudante e salvo no db")
     void save() {
         int rowAffected = EstudanteRepository.save(estudante);
