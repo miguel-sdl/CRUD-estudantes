@@ -103,4 +103,18 @@ class EstudanteRepositoryTest {
         int rowsAffected = EstudanteRepository.update(estudante);
         Assertions.assertEquals(0, rowsAffected);
     }
+
+    @Test
+    @DisplayName("delete() deve retornar 1 quando um estudante e deletado do db")
+    void delete() {
+        int rowsAffected = EstudanteRepository.delete(7);
+        Assertions.assertEquals(1, rowsAffected);
+    }
+
+    @Test
+    @DisplayName("delete() deve retornar 0 quando não encontrar estudante para deletar")
+    void delete_estudanteNaoEncontrado() {
+        int rowsAffected = EstudanteRepository.delete(1000);
+        Assertions.assertEquals(0, rowsAffected);
+    }
 }
