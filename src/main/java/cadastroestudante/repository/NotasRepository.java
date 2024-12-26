@@ -102,4 +102,22 @@ public class NotasRepository {
 
         return preparedStatement;
     }
+
+    public static int delete(int studentId) {
+        try (Connection conn = ConnectionFactory.getConnection();
+        PreparedStatement ps = createPreparedStatementDelete(conn, studentId)) {
+            return ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static PreparedStatement createPreparedStatementDelete(Connection conn, int id) throws SQLException {
+        String sql = "DELETE FROM `cadastro_estudante`.`notas` WHERE id_estudante = ?;";
+
+        PreparedStatement preparedStatement = conn.prepareStatement(sql);
+        preparedStatement.setInt(1, id);
+
+        return preparedStatement;
+    }
 }

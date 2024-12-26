@@ -58,8 +58,15 @@ class NotasRepositoryTest {
     }
 
     @Test
-    @DisplayName("update() deve retornar 1 quando 1 nota e salva no db")
+    @DisplayName("save() deve lancar excecao ao tentar salvar a nota de um estudante que ja possui nota no db")
+    void save_notaJaExiste() {
+        Assertions.assertThrows(RuntimeException.class, () -> NotasRepository.save(notasId3));
+    }
+
+    @Test
+    @DisplayName("update() deve retornar 1 quando 1 nota e atualizada no db")
     void update() {
+        notas.setIdEstudante(5);
         int rowsAffected = NotasRepository.update(notas);
         Assertions.assertEquals(1, rowsAffected);
     }
@@ -72,4 +79,17 @@ class NotasRepositoryTest {
         Assertions.assertEquals(0, rowsAffected);
     }
 
+    @Test
+    @DisplayName("delete() deve retornar 1 quando uma nota e deletada do db")
+    void delete() {
+        int rowsAffected = NotasRepository.delete(2);
+        Assertions.assertEquals(1, rowsAffected);
+    }
+
+    @Test
+    @DisplayName("delete() deve retornar 0 quando nao encotrar nota para deletar")
+    void delete_NaoEncontraNota() {
+        int rowsAffected = NotasRepository.delete(1000);
+        Assertions.assertEquals(0, rowsAffected);
+    }
 }
