@@ -1,6 +1,7 @@
 package cadastroestudante.service;
 
 import cadastroestudante.entity.Estudante;
+import cadastroestudante.entity.Notas;
 import cadastroestudante.repository.EstudanteRepository;
 
 import java.util.List;
@@ -43,6 +44,11 @@ public class EstudanteService {
         if (estudantes.isEmpty()) {
             System.out.println("Nao foi encontrado nenhum estudante com nome " + nome);
             return;
+        }
+
+        for (Estudante estudante : estudantes) {
+            Notas notas = NotasService.findByStudentId(estudante.getId());
+            estudante.setNotas(notas);
         }
 
         printStudent(estudantes);
