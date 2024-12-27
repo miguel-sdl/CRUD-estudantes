@@ -78,7 +78,24 @@ public class EstudanteService {
     }
 
     private static void showSaveStudent() {
+        System.out.println("Digite o nome do estudante para ser cadastrado");
+        String nome = SCANNER.nextLine();
+        System.out.println("Digite a idade do estudante");
+        int idade = Integer.parseInt(SCANNER.nextLine());
+        System.out.println("Digite a serie do estudante");
+        int serie = Integer.parseInt(SCANNER.nextLine());
 
+        Estudante estudante = Estudante.builder()
+                .nome(nome)
+                .idade(idade)
+                .serie(serie)
+                .build();
+
+        int rowsAffected = save(estudante);
+
+        if (rowsAffected == 1) {
+            System.out.println("Estudante cadastrado");
+        }
     }
 
     private static void showDeleteStudent() {
@@ -117,6 +134,12 @@ public class EstudanteService {
         serieValidate(estudante.getSerie());
         idadeValidate(estudante.getIdade());
         return EstudanteRepository.update(estudante);
+    }
+
+    public static int save(Estudante estudante) {
+        serieValidate(estudante.getSerie());
+        idadeValidate(estudante.getIdade());
+        return EstudanteRepository.save(estudante);
     }
 
     private static void idValidate(int id) {
