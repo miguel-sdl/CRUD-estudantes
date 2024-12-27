@@ -50,6 +50,30 @@ public class EstudanteService {
     }
 
     private static void showUpdateStudent() {
+        printStudent(findAll());
+        System.out.println("Digite o id do estudante que sera atualizado");
+        int id = Integer.parseInt(SCANNER.nextLine());
+        System.out.println("Digite o novo nome:");
+        String nome = SCANNER.nextLine();
+        System.out.println("Digite a nova idade");
+        int idade = Integer.parseInt(SCANNER.nextLine());
+        System.out.println("Digite a nova serie");
+        int serie = Integer.parseInt(SCANNER.nextLine());
+
+        Estudante estudante = Estudante.builder()
+                .id(id)
+                .nome(nome)
+                .serie(serie)
+                .idade(idade)
+                .build();
+
+        int rowsAffected = update(estudante);
+
+        if (rowsAffected == 0) {
+            System.out.println("Nao foi encontrado estudante para atualizar");
+        } else {
+            System.out.println("Estudante atualizado com sucesso");
+        }
 
     }
 
@@ -88,9 +112,28 @@ public class EstudanteService {
         return EstudanteRepository.findById(id);
     }
 
+    public static int update(Estudante estudante) {
+        idValidate(estudante.getId());
+        serieValidate(estudante.getSerie());
+        idadeValidate(estudante.getIdade());
+        return EstudanteRepository.update(estudante);
+    }
+
     private static void idValidate(int id) {
         if (id <= 0) {
             throw new IllegalArgumentException("ID invalido");
+        }
+    }
+
+    private static void serieValidate(int serie) {
+        if (serie <= 0 || serie > 9) {
+            throw new IllegalArgumentException("Serie invalida");
+        }
+    }
+
+    private static void idadeValidate(int idade) {
+        if (idade <= 0 || idade > 100) {
+            throw new IllegalArgumentException("Idade invalida");
         }
     }
 
