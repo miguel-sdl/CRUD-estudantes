@@ -47,12 +47,50 @@ public class NotasService {
 
     }
 
-    public static Notas findByStudentId(int id) {
-        idValidate(id);
-        return NotasRepository.findByStudentId(id);
-    }
-
     private static void showUpdate() {
+        System.out.println("Digite o id do estudante que tera suas notas atualizadas");
+        int id = Integer.parseInt(SCANNER.nextLine());
+        idValidate(id);
+
+        System.out.println("Digite a nova nota de portugues");
+        double portugues = Double.parseDouble(SCANNER.nextLine());
+        System.out.println("Digite a nova nota de matematica");
+        double matematica = Double.parseDouble(SCANNER.nextLine());
+        System.out.println("Digite a nova nota de historia");
+        double historia = Double.parseDouble(SCANNER.nextLine());
+        System.out.println("Digite a nova nota de geografia");
+        double geografia = Double.parseDouble(SCANNER.nextLine());
+        System.out.println("Digite a nova nota de fisica");
+        double fisica = Double.parseDouble(SCANNER.nextLine());
+        System.out.println("Digite a nova nota de quimica");
+        double quimica = Double.parseDouble(SCANNER.nextLine());
+        System.out.println("Digite a nova nota de biologia");
+        double biologia = Double.parseDouble(SCANNER.nextLine());
+        System.out.println("Digite a nova nota de ingles");
+        double ingles = Double.parseDouble(SCANNER.nextLine());
+
+
+        Notas notas = Notas.builder()
+                .idEstudante(id)
+                .portugues(portugues)
+                .matematica(matematica)
+                .historia(historia)
+                .geografia(geografia)
+                .fisica(fisica)
+                .quimica(quimica)
+                .biologia(biologia)
+                .ingles(ingles)
+                .build();
+
+
+        int rowsAffected = update(notas);
+
+        if (rowsAffected == 0) {
+            System.out.println("Nao foi encontrado estudante para atualizar");
+        } else {
+            System.out.println("Notas do estudante atualizadas com sucesso");
+        }
+
 
     }
 
@@ -62,6 +100,18 @@ public class NotasService {
 
     private static void showDelete() {
 
+    }
+
+
+    public static Notas findByStudentId(int id) {
+        idValidate(id);
+        return NotasRepository.findByStudentId(id);
+    }
+
+    public static int update(Notas notas) {
+        idValidate(notas.getIdEstudante());
+        if (!notas.isValid()) throw new RuntimeException("Nota invalida");
+        return NotasRepository.update(notas);
     }
 
     private static void idValidate(int id) {
