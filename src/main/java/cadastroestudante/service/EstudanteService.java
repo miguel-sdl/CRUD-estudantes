@@ -99,6 +99,21 @@ public class EstudanteService {
     }
 
     private static void showDeleteStudent() {
+        printStudent(findAll());
+
+        System.out.println("Digite o id do estudante que deve ser removido");
+        int id = Integer.parseInt(SCANNER.nextLine());
+
+        Estudante estudante = findById(id);
+
+        if (Objects.isNull(estudante)) {
+            System.out.println("Estudante nao encontrado");
+        } else {
+            delete(id);
+            printStudent(estudante);
+            System.out.println("Estudante acima removido com sucesso");
+        }
+
 
     }
 
@@ -140,6 +155,11 @@ public class EstudanteService {
         serieValidate(estudante.getSerie());
         idadeValidate(estudante.getIdade());
         return EstudanteRepository.save(estudante);
+    }
+
+    public static int delete(int id) {
+        idValidate(id);
+        return EstudanteRepository.delete(id);
     }
 
     private static void idValidate(int id) {
