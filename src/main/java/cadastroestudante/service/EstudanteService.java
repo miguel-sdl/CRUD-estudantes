@@ -52,10 +52,6 @@ public class EstudanteService {
             return;
         }
 
-        for (Estudante estudante : estudantes) {
-            Notas notas = NotasService.findByStudentId(estudante.getId());
-            estudante.setNotas(notas);
-        }
 
         printStudent(estudantes);
 
@@ -169,7 +165,15 @@ public class EstudanteService {
 
 
     public static List<Estudante> findByName(String name) {
-        return EstudanteRepository.findByName(name);
+        List<Estudante> estudantes = EstudanteRepository.findByName(name);
+
+        for (Estudante estudante : estudantes) {
+            Notas notas = NotasService.findByStudentId(estudante.getId());
+            estudante.setNotas(notas);
+        }
+
+        return estudantes;
+
     }
 
     public static List<Estudante> findAll() {
@@ -178,7 +182,10 @@ public class EstudanteService {
 
     public static Estudante findById(int id) {
         idValidate(id);
-        return EstudanteRepository.findById(id);
+        Estudante estudante = EstudanteRepository.findById(id);
+        estudante.setNotas(NotasService.findByStudentId(id));
+
+        return estudante;
     }
 
     public static int update(Estudante estudante) {
