@@ -165,6 +165,7 @@ public class EstudanteService {
 
     public static int delete(int id) {
         idValidate(id);
+        NotasService.delete(id);
         return EstudanteRepository.delete(id);
     }
 

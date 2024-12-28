@@ -147,7 +147,16 @@ public class NotasService {
     }
 
     private static void showDelete() {
+        System.out.println("Digite o id do estudante para remover sua nota");
+        int id = Integer.parseInt(SCANNER.nextLine());
 
+        int rowsAffected = delete(id);
+
+        if (rowsAffected == 0) {
+            System.out.println("Nao foi encontrado estudante com id " + id);
+        } else {
+            System.out.println("Notas removidas com sucesso");
+        }
     }
 
 
@@ -165,6 +174,11 @@ public class NotasService {
     public static int save(Notas notas) {
         if (!notas.isValid()) throw new RuntimeException("Nota invalida");
         return NotasRepository.save(notas);
+    }
+
+    public static int delete(int studentId) {
+        idValidate(studentId);
+        return NotasRepository.delete(studentId);
     }
 
     private static void idValidate(int id) {
