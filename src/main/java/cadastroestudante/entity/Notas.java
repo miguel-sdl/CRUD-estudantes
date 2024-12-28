@@ -31,8 +31,22 @@ public class Notas {
 
     }
 
+    public double getMedia() {
+        double media = 0;
+        media += portugues;
+        media += matematica;
+        media += historia;
+        media += geografia;
+        media += fisica;
+        media += quimica;
+        media += biologia;
+        media += ingles;
+
+        return media / 8;
+    }
+
     private boolean isValid(double nota) {
-        if (nota<=0 || nota>10) return false;
+        if (nota < 0 || nota > 10) return false;
 
         return true;
     }

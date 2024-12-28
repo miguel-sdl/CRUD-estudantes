@@ -43,4 +43,17 @@ class NotasServiceTest {
         notas.setHistoria(10.1);
         Assertions.assertThrows(RuntimeException.class, () -> NotasService.update(notas));
     }
+
+    @Test
+    @DisplayName("isApproved() deve retornar true quando a media das notas e maior ou igual a 6")
+    void isApproved() {
+        Assertions.assertTrue(() -> NotasService.isApproved(notas));
+    }
+
+    @Test
+    @DisplayName("isApproved() deve retornar false quando a media das notas e menor ou igual a 6")
+    void isApproved_mediaMenor6() {
+        notas.setIngles(0);
+        Assertions.assertFalse(() -> NotasService.isApproved(notas));
+    }
 }

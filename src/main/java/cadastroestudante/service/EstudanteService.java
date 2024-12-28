@@ -10,7 +10,7 @@ import java.util.Scanner;
 
 public class EstudanteService {
     private static final Scanner SCANNER = new Scanner(System.in);
-    private static final String MENU = "Escolha a operacao:\n1. Encontrar um estudante\n2. Atualizar as informacoes do estudante\n3. Adicionar um novo estudante\n4.Deletar um estudan\n0. Sair";
+    private static final String MENU = "Escolha a operacao:\n1. Encontrar um estudante\n2. Atualizar as informacoes do estudante\n3. Adicionar um novo estudante\n4.Deletar um estudan\n5. Encontrar todos estudantes aprovados\n6. Encontrar todos estudantes reprovados\n0. Sair";
 
 
     public static void showMenu() {
@@ -31,6 +31,12 @@ public class EstudanteService {
                     break;
                 case 4:
                     showDeleteStudent();
+                    break;
+                case 5:
+                    showAllApprovedStudents();
+                    break;
+                case 6:
+                    showAllNotApprovedStudents();
                     break;
             }
         }
@@ -123,6 +129,31 @@ public class EstudanteService {
 
     }
 
+    private static void showAllApprovedStudents() {
+        List<Estudante> estudantes = findAll();
+
+        List<Estudante> approvedStudents = getApprovedStudents(estudantes);
+
+        if (approvedStudents.isEmpty()) {
+            System.out.println("Nenhum estudante aprovado");
+            return;
+        }
+        System.out.println("Estudantes aprovados:");
+        printStudent(approvedStudents);
+    }
+
+    private static void showAllNotApprovedStudents() {
+        List<Estudante> estudantes = findAll();
+
+        List<Estudante> notApprovedStudents = getNotApprovedStudents(estudantes);
+
+        if (notApprovedStudents.isEmpty()) {
+            System.out.println("Nenhum estudante reprovado");
+        }
+        System.out.println("Estudantes reprovados:");
+        printStudent(notApprovedStudents);
+    }
+
     private static void printStudent(List<Estudante> estudantes) {
         for (Estudante estudante : estudantes) {
             printStudent(estudante);
@@ -169,6 +200,29 @@ public class EstudanteService {
         return EstudanteRepository.delete(id);
     }
 
+    public static List<Estudante> getApprovedStudents(List<Estudante> estudantes) {
+        if (estudantes.isEmpty()) {
+            throw new IllegalArgumentException("A lista de estudantes nao pode ser vazia");
+        }
+
+        return estudantes.stream()
+                .filter((e) -> Objects.nonNull(e.getNotas()))
+                .filter((e) -> NotasService.isApproved(e.getNotas()))
+                .toList();
+    }
+
+    public static List<Estudante> getNotApprovedStudents(List<Estudante> estudantes) {
+        if (estudantes.isEmpty()) {
+            throw new IllegalArgumentException("A lista de estudantes nao pode ser vazia");
+        }
+
+        return estudantes.stream()
+                .filter((e) -> Objects.nonNull(e.getNotas()))
+                .filter((e) -> !NotasService.isApproved(e.getNotas()))
+                .toList();
+    }
+
+
     private static void idValidate(int id) {
         if (id <= 0) {
             throw new IllegalArgumentException("ID invalido");
@@ -186,5 +240,4 @@ public class EstudanteService {
             throw new IllegalArgumentException("Idade invalida");
         }
     }
-
 }

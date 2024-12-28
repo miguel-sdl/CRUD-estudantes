@@ -8,7 +8,7 @@ import java.util.Scanner;
 
 public class NotasService {
     private static final Scanner SCANNER = new Scanner(System.in);
-    private static final String MENU = "Escolha a opcao:\n1. Encontrar as notas de um estudante\n2. Atualizar as notas de um estudante\n3. Adicionar notas a um estudante\n4. Deletar as notas de um estudante\n0. Sair";
+    private static final String MENU = "Escolha a opcao:\n1. Encontrar as notas de um estudante\n2. Atualizar as notas de um estudante\n3. Adicionar notas a um estudante\n4. Deletar as notas de um estudante\n5. Verificar se as notas de um estudante estao aprovadas\n0. Sair";
 
     public static void showMenu() {
         while (true) {
@@ -48,7 +48,7 @@ public class NotasService {
     }
 
     private static void showUpdate() {
-        System.out.println("Digite o id do estudante que tera suas notas atualizadas");
+        System.out.println("Digite o id do estudante para atualizar sua nota");
         int id = Integer.parseInt(SCANNER.nextLine());
         idValidate(id);
 
@@ -95,7 +95,7 @@ public class NotasService {
     }
 
     private static void showSave() {
-        System.out.println("Digite o id do estudante que tera suas notas salvas");
+        System.out.println("Digite o id do estudante para suas notas serem salvas");
         int id = Integer.parseInt(SCANNER.nextLine());
         idValidate(id);
 
@@ -159,6 +159,25 @@ public class NotasService {
         }
     }
 
+    private static void showVerification() {
+        System.out.println("Digite o id do estudante para verificar sua nota");
+        int id = Integer.parseInt(SCANNER.nextLine());
+
+        Notas notas = findByStudentId(id);
+
+        if (Objects.isNull(notas)) {
+            System.out.println("Nao foi encontrado notas do estudante com id " + id);
+            return;
+        }
+
+        if (isApproved(notas)) {
+            System.out.println("O estudante foi aprovado com media " + notas.getMedia());
+        } else {
+            System.out.println("O estudante foi reprovado com media " + notas.getMedia());
+        }
+
+    }
+
 
     public static Notas findByStudentId(int id) {
         idValidate(id);
@@ -179,6 +198,11 @@ public class NotasService {
     public static int delete(int studentId) {
         idValidate(studentId);
         return NotasRepository.delete(studentId);
+    }
+
+    public static boolean isApproved(Notas notas) {
+        if (!notas.isValid()) throw new RuntimeException("Nota invalida");
+        return notas.getMedia() >= 6;
     }
 
     private static void idValidate(int id) {
