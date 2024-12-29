@@ -8,6 +8,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * Classe que faz a interação direta com o banco de dados.
+ * <p>Possui métodos para as operações CRUD para tabela {@code notas} no banco.</p>
+ */
 public class NotasRepository {
 
     public static Notas findByStudentId(int studentId) {
@@ -105,7 +109,7 @@ public class NotasRepository {
 
     public static int delete(int studentId) {
         try (Connection conn = ConnectionFactory.getConnection();
-        PreparedStatement ps = createPreparedStatementDelete(conn, studentId)) {
+             PreparedStatement ps = createPreparedStatementDelete(conn, studentId)) {
             return ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);

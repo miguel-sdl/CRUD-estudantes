@@ -6,10 +6,23 @@ import cadastroestudante.repository.NotasRepository;
 import java.util.Objects;
 import java.util.Scanner;
 
+/**
+ * Classe de serviço para {@code Notas}. <br>
+ * <p>Essa classe faz o intermédio entre o usuário e as operações CRUD no banco de dados,
+ * que acontecem por meio da classe {@code NotasRepository}.
+ * <p>Fornece alguns métodos como o método {@code showMenu()} que inicia a interação com o usuário
+ * e também  outros métodos para operações CRUD.
+ *
+ * @see NotasRepository
+ */
 public class NotasService {
     private static final Scanner SCANNER = new Scanner(System.in);
     private static final String MENU = "Escolha a opcao:\n1. Encontrar as notas de um estudante\n2. Atualizar as notas de um estudante\n3. Adicionar notas a um estudante\n4. Deletar as notas de um estudante\n5. Verificar se as notas de um estudante estao aprovadas\n0. Sair";
 
+    /**
+     * Mostra o menu de operações e contém a lógica para capturar a entrada do usuário
+     * e fazer a operação desejada ou retornar para o menu anterior.
+     */
     public static void showMenu() {
         while (true) {
             System.out.println(MENU);
@@ -179,27 +192,68 @@ public class NotasService {
     }
 
 
+    /**
+     * Procura as notas do estudante com id fornecido.
+     *
+     * @param id Id do estudante
+     * @return As notas do estudante ou {@code null} caso não encontre.
+     * @throws IllegalArgumentException caso o {@code id} seja negativo.
+     */
     public static Notas findByStudentId(int id) {
         idValidate(id);
         return NotasRepository.findByStudentId(id);
     }
 
+    /**
+     * Atualiza as Notas de um estudante no banco de dados.
+     * <p>Retorna as linhas afetadas no banco, então caso não sejam encontradas Notas para atualizar o retorno é {@code 0}.</p>
+     *
+     * @param notas Notas para serem atualizadas no banco
+     * @return As linhas afetadas no banco.
+     * @throws RuntimeException         caso a nota seja inválida
+     * @throws IllegalArgumentException caso o id do estudante seja negativo.
+     */
     public static int update(Notas notas) {
         idValidate(notas.getIdEstudante());
         if (!notas.isValid()) throw new RuntimeException("Nota invalida");
         return NotasRepository.update(notas);
     }
 
+    /**
+     * Salva as Notas de um Estudante no banco de dados.
+     * <p>Antes de atualizar no banco, faz as verificações das informações, então caso seja lançada alguma exceção as notas não são salvas.</p>
+     *
+     * @param notas Notas para serem salvas no banco
+     * @return As linhas afetadas no banco.
+     * @throws RuntimeException         caso a nota seja inválida
+     * @throws RuntimeException         caso tente salvar Notas que já existem no banco.
+     * @throws IllegalArgumentException caso o id do estudante seja negativo.
+     */
     public static int save(Notas notas) {
         if (!notas.isValid()) throw new RuntimeException("Nota invalida");
         return NotasRepository.save(notas);
     }
 
+    /**
+     * Remove as Notas de um estudante do banco de dados.
+     *
+     * @param studentId Id do estudante que terá sua nota removida do banco.
+     * @return As linhas afetadas no banco.
+     * @throws IllegalArgumentException caso {@code studentId} seja negativo
+     */
     public static int delete(int studentId) {
         idValidate(studentId);
         return NotasRepository.delete(studentId);
     }
 
+    /**
+     * Verifica se as Notas estão aprovadas.
+     * <p>As notas são consideradas aprovadas quando a sua média é maior ou igual a 6.</p>
+     *
+     * @param notas Notas que serão verificadas.
+     * @return {@code true} se está aprovado, caso contrário {@code false}.
+     * @throws RuntimeException caso a nota seja inválida.
+     */
     public static boolean isApproved(Notas notas) {
         if (!notas.isValid()) throw new RuntimeException("Nota invalida");
         return notas.getMedia() >= 6;

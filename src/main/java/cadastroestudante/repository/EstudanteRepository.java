@@ -10,6 +10,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Classe que faz a interação direta com o banco de dados.
+ * <p>Possui métodos para as operações CRUD para tabela {@code estudante} no banco.</p>
+ */
 public class EstudanteRepository {
     public static List<Estudante> findByName(String name) {
         List<Estudante> estudantes = new ArrayList<>();
