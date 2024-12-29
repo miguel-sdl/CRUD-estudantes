@@ -17,7 +17,7 @@ import java.util.Scanner;
  */
 public class NotasService {
     private static final Scanner SCANNER = new Scanner(System.in);
-    private static final String MENU = "Escolha a opcao:\n1. Encontrar as notas de um estudante\n2. Atualizar as notas de um estudante\n3. Adicionar notas a um estudante\n4. Deletar as notas de um estudante\n5. Verificar se as notas de um estudante estao aprovadas\n0. Sair";
+    private static final String MENU = "\nEscolha a opcao:\n1. Encontrar as notas de um estudante\n2. Atualizar as notas de um estudante\n3. Adicionar notas a um estudante\n4. Deletar as notas de um estudante\n5. Verificar se as notas de um estudante estao aprovadas\n0. Sair";
 
     /**
      * Mostra o menu de operações e contém a lógica para capturar a entrada do usuário
@@ -41,6 +41,9 @@ public class NotasService {
                     break;
                 case 4:
                     showDelete();
+                    break;
+                case 5:
+                    showVerification();
                     break;
             }
         }

@@ -19,7 +19,7 @@ import java.util.Scanner;
  */
 public class EstudanteService {
     private static final Scanner SCANNER = new Scanner(System.in);
-    private static final String MENU = "Escolha a operação:\n1. Encontrar um estudante\n2. Atualizar as informações do estudante\n3. Adicionar um novo estudante\n4.Remover um estudante\n5. Encontrar todos estudantes aprovados\n6. Encontrar todos estudantes reprovados\n0. Sair";
+    private static final String MENU = "\nEscolha a operação:\n1. Encontrar um estudante\n2. Atualizar as informações do estudante\n3. Adicionar um novo estudante\n4. Remover um estudante\n5. Encontrar todos estudantes aprovados\n6. Encontrar todos estudantes reprovados\n0. Sair";
 
 
     /**
