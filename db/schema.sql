@@ -10,7 +10,7 @@ CREATE TABLE `cadastro_estudante`.`estudante` (
 
 CREATE TABLE `cadastro_estudante`.`notas` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `id_estudante` INT NOT NULL,
+  `id_estudante` INT NOT NULL UNIQUE,
   `portugues` DECIMAL(4,2) NULL,
   `matematica` DECIMAL(4,2) NULL,
   `historia` DECIMAL(4,2) NULL,

@@ -3,7 +3,8 @@ INSERT INTO `cadastro_estudante`.`estudante` (`nome`, `idade`, `serie`) VALUES
 ('Maria Oliveira', 17, 3),
 ('Carlos Pereira', 15, 1),
 ('Ana Santos', 16, 2),
-('Lucas Costa', 18, 3);
+('Lucas Costa', 18, 3),
+('Maria Eduarda', 18, 3);
 
 
 INSERT INTO `cadastro_estudante`.`notas` (`id_estudante`, `portugues`, `matematica`, `historia`, `geografia`, `fisica`, `quimica`, `biologia`, `ingles`) VALUES
