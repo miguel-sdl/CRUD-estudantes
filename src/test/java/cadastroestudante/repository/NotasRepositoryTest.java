@@ -66,7 +66,7 @@ class NotasRepositoryTest {
     @Test
     @DisplayName("update() deve retornar 1 quando 1 nota e atualizada no db")
     void update() {
-        notas.setIdEstudante(5);
+        notas.setIdEstudante(4);
         int rowsAffected = NotasRepository.update(notas);
         Assertions.assertEquals(1, rowsAffected);
     }

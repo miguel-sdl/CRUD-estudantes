@@ -114,7 +114,7 @@ class EstudanteRepositoryTest {
     @Test
     @DisplayName("delete() deve retornar 1 quando um estudante e deletado do db")
     void delete() {
-        int rowsAffected = EstudanteRepository.delete(7);
+        int rowsAffected = EstudanteRepository.delete(5);
         Assertions.assertEquals(1, rowsAffected);
     }
 
