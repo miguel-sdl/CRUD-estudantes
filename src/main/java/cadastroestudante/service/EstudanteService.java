@@ -29,26 +29,26 @@ public class EstudanteService {
     public static void showMenu() {
         while (true) {
             System.out.println(MENU);
-            int escolha = Integer.parseInt(SCANNER.nextLine());
-            if (escolha == 0) break;
+            String escolha = SCANNER.nextLine();
+            if (escolha.equals("0")) break;
 
             switch (escolha) {
-                case 1:
+                case "1":
                     showFindStudent();
                     break;
-                case 2:
+                case "2":
                     showUpdateStudent();
                     break;
-                case 3:
+                case "3":
                     showSaveStudent();
                     break;
-                case 4:
+                case "4":
                     showDeleteStudent();
                     break;
-                case 5:
+                case "5":
                     showAllApprovedStudents();
                     break;
-                case 6:
+                case "6":
                     showAllNotApprovedStudents();
                     break;
             }
@@ -215,7 +215,12 @@ public class EstudanteService {
     public static Estudante findById(int id) {
         idValidate(id);
         Estudante estudante = EstudanteRepository.findById(id);
-        estudante.setNotas(NotasService.findByStudentId(id));
+        Notas notas = NotasService.findByStudentId(id);
+
+        if (Objects.isNull(notas)) {
+            return estudante;
+        }
+        estudante.setNotas(notas);
 
         return estudante;
     }

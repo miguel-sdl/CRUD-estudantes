@@ -26,23 +26,23 @@ public class NotasService {
     public static void showMenu() {
         while (true) {
             System.out.println(MENU);
-            int escolha = Integer.parseInt(SCANNER.nextLine());
-            if (escolha == 0) break;
+            String escolha = SCANNER.nextLine();
+            if (escolha.equals("0")) break;
 
             switch (escolha) {
-                case 1:
+                case "1":
                     showFind();
                     break;
-                case 2:
+                case "2":
                     showUpdate();
                     break;
-                case 3:
+                case "3":
                     showSave();
                     break;
-                case 4:
+                case "4":
                     showDelete();
                     break;
-                case 5:
+                case "5":
                     showVerification();
                     break;
             }
@@ -67,6 +67,11 @@ public class NotasService {
         System.out.println("Digite o id do estudante para atualizar sua nota");
         int id = Integer.parseInt(SCANNER.nextLine());
         idValidate(id);
+
+        if (Objects.isNull(EstudanteService.findById(id))) {
+            System.out.println("Nao existe estudante com id " + id);
+            return;
+        }
 
         System.out.println("Digite a nova nota de portugues");
         double portugues = Double.parseDouble(SCANNER.nextLine());

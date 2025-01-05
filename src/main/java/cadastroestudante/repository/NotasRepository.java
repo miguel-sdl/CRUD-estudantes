@@ -91,7 +91,7 @@ public class NotasRepository {
     private static PreparedStatement createPreparedStatementUpdate(Connection conn, Notas notas) throws SQLException {
         String sql = "UPDATE `cadastro_estudante`.`notas`\n" +
                 "SET `portugues` = ?, `matematica` = ?, `historia` = ?,`geografia` = ?, `fisica` = ?, `quimica` = ?, `biologia` = ?, `ingles` = ?\n" +
-                "WHERE `id` = ?\n";
+                "WHERE `id_estudante` = ?\n";
 
         PreparedStatement preparedStatement = conn.prepareStatement(sql);
         preparedStatement.setDouble(1, notas.getPortugues());
